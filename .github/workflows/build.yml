@@ -1,0 +1,23 @@
+name: build
+on: [push]
+
+jobs:
+  latex-job:
+    runs-on: ubuntu-latest
+    name: Latex Job
+    steps:
+    - uses: actions/checkout@v1
+    - name: Compile
+      uses: xu-cheng/latex-action@v2
+      with:
+        root_file: "slides.tex"
+        glob_root_file: true
+        latexmk_use_xelatex: true
+    - name: Upload PDF
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: "slides.pdf"
+        tag: release
+        overwrite: true
+        prerelease: true
